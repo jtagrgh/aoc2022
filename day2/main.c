@@ -27,15 +27,9 @@
 int main() {
     FILE *fp = fopen("input.txt", "rb");
 
-    char buff[100];
     char me, op;
     int score = 0;
-    while (fgets(buff, 100, fp)) {
-        op = buff[0];
-        me = buff[2];
-
-        printf("%c %c ", op, me);
-
+    while (fscanf(fp, "%c %c\n", &op, &me) != EOF) {
         if (me == 'Z') {
             me = op + 1;
             if (me == 'D') me = 'A';
@@ -48,8 +42,6 @@ int main() {
             me = op - 1;
             if (me == 'A' - 1) me = 'C';
         }
-
-        printf("%c \n", me);
 
         score += me - 'A' + 1;
     }
