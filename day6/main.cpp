@@ -15,9 +15,8 @@ int p2() {
     }
 
     int iter = 13;
-    bool done = false;
 
-    while ( (inc = fgetc(fp)) != EOF && !done) {
+    while ( (inc = fgetc(fp)) != EOF) {
         iter++;
         window.push_back(inc); // 1
         set<char> st(window.begin(), window.end()); // 4
@@ -43,9 +42,8 @@ int p1() {
     }
 
     int iter = 3;
-    bool done = false;
 
-    while ( (inc = fgetc(fp)) != EOF && !done) {
+    while ( (inc = fgetc(fp)) != EOF) {
         iter++;
         window.push_back(inc); // 1
         set<char> st(window.begin(), window.end()); // 4
@@ -61,7 +59,45 @@ int p1() {
     return 0;
 }
 
+#include <iostream>
+#include <fstream>
+#include <string>
+
+// C++ version
+int p1_alt() {
+    ifstream input("in.txt");
+    string line;
+    getline(input, line);
+    int count = 3;
+    for (auto i = line.begin();;i++) {
+        set<char> st(i, i+4);
+        count++;
+        if (st.size() == 4) break;
+    }
+    cout << count << endl;
+    input.close();
+    return 0;
+}
+
+// C++ version
+int p2_alt() {
+    ifstream input("in.txt");
+    string line;
+    getline(input, line);
+    int count = 13;
+    for (auto i = line.begin();;i++) {
+        set<char> st(i, i+14);
+        count++;
+        if (st.size() == 14) break;
+    }
+    cout << count << endl;
+    input.close();
+    return 0;
+}
+
 int main() {
     p1();
+    p1_alt();
     p2();
+    p2_alt();
 }
