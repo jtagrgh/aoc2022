@@ -31,7 +31,6 @@ void p1() {
                     string name {line.substr(5)};
                     tree.insert({dirs.top() + "/" + name, pair<int, set<string>>{0, set<string>()}});
                     dirs.push(dirs.top() + "/" + name);
-                    cout << tree.find(dirs.top())->first << endl;
                 }
                 else { // .. cmd
                     int sum {0};
@@ -86,8 +85,6 @@ void p2() {
 
     multimap<string, pair<int, set<string>>> tree;
 
-    int out_val = 0;
-
     list<int> greed;
 
     stack<string> dirs;
@@ -107,13 +104,8 @@ void p2() {
                         int val = tree.find(i)->second.first; 
                         sum += val;
                     }
-
                     greed.push_back(sum);
-
                     tree.find(dirs.top())->second.first = sum;
-                    if (sum <= 100000 && sum > 0) {
-                        out_val += sum;
-                    }
                     dirs.pop();
                 }
             } else {
@@ -140,13 +132,8 @@ void p2() {
             int val = tree.find(i)->second.first;
             sum += val;
         }
-
         greed.push_back(sum);
-
         tree.find(dirs.top())->second.first = sum;
-        if (sum <= 100000 && sum > 0) {
-            out_val += sum;
-        }
         dirs.pop();
     }
 
@@ -157,8 +144,6 @@ void p2() {
             break;
         }
     }
-    
-    cout << "final " << out_val << endl;
 }
 
 int main () {
