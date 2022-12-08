@@ -13,24 +13,24 @@ int p1() {
     FILE *fp = fopen("in.txt", "r");
     char c;
 
+    int width;
+    int length;
+
     int grid[100][100];
-    int width = 0;
-
-    while ( (c = getc(fp)) != '\n') {
-        grid[0][width++] = c - '0';
-    }
-
-    int length = 1;
-    int i = 0;
+    int w = 0;
+    int l = 0;
 
     while ( (c = getc(fp)) != EOF) {
         if (c == '\n') {
-            length++;
-            i = 0;
+            l++;
+            if (w > width) width = w;
+            w = 0;
         } else {
-            grid[length][i++] = c - '0';
+            grid[l][w++] = c - '0';
         }
     }
+
+    length = l;
 
     int total = 0;
 
