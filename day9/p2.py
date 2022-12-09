@@ -26,7 +26,6 @@ for cmd in lines:
 			k[0].x += 1
 
 		for n in range(1, len(k)):
-			touching = False
 			px = k[n-1].x
 			py = k[n-1].y
 			surrounding = [
@@ -34,9 +33,7 @@ for cmd in lines:
 				for i in range(px - 1, px + 2) \
 				for j in range(py - 1, py + 2)
 			]
-			if [k[n].x, k[n].y] in surrounding: 
-				touching = True;
-			if not touching:
+			if not [k[n].x, k[n].y] in surrounding:
 				x_dif = px - k[n].x
 				y_dif = py - k[n].y
 
