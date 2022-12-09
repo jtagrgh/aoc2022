@@ -26,12 +26,12 @@ for cmd in get_line():
 		for i, t in enumerate(k[1:], start=1):
 			px = k[i-1].x
 			py = k[i-1].y
-			surrounding = [
-				[x,y] \
+			surrounding = (
+				(x,y) \
 				for x in range(px - 1, px + 2) \
 				for y in range(py - 1, py + 2)
-			]
-			if not [t.x, t.y] in surrounding:
+			)
+			if not (t.x, t.y) in surrounding:
 				x_dif = px - t.x
 				y_dif = py - t.y
 
