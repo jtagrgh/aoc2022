@@ -3,18 +3,16 @@ class point:
 		self.x = x
 		self.y = y
 
-l = 1000
-
+l = 500
 grid = [[0 for _ in range(l)] for _ in range(l)]
-lines = []
+k = [point(0,0) for _ in range(10)]
 
-with open("in.txt", "r") as f:
-	for line in f:
-		lines.append(line.replace("\n", "").split())
+def get_line():
+	with open("in.txt", "r") as f:
+		for line in f:
+			yield line.replace("\n", "").split()
 
-k = [point(l//2,l//2) for _ in range(10)]
-
-for cmd in lines:
+for cmd in get_line():
 	for _ in range(int(cmd[1])):
 		if cmd[0] == 'U':
 			k[0].y -= 1
@@ -25,26 +23,26 @@ for cmd in lines:
 		elif cmd[0] == 'R':
 			k[0].x += 1
 
-		for n in range(1, len(k)):
-			px = k[n-1].x
-			py = k[n-1].y
+		for i, t in enumerate(k[1:], start=1):
+			px = k[i-1].x
+			py = k[i-1].y
 			surrounding = [
-				[i,j] \
-				for i in range(px - 1, px + 2) \
-				for j in range(py - 1, py + 2)
+				[x,y] \
+				for x in range(px - 1, px + 2) \
+				for y in range(py - 1, py + 2)
 			]
-			if not [k[n].x, k[n].y] in surrounding:
-				x_dif = px - k[n].x
-				y_dif = py - k[n].y
+			if not [t.x, t.y] in surrounding:
+				x_dif = px - t.x
+				y_dif = py - t.y
 
 				if x_dif != 0: x_dif /= abs(x_dif)
 				if y_dif != 0: y_dif /= abs(y_dif)
 
-				k[n].x += int(x_dif)
-				k[n].y += int(y_dif)
+				k[i].x += int(x_dif)
+				k[i].y += int(y_dif)
 
-			if n == len(k) - 1:
-				grid[k[n].y][k[n].x] += 1
+			if i == len(k) - 1:
+				grid[t.y][t.x] += 1
 
 sum = 0
 
