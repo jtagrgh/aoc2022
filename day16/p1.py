@@ -1,55 +1,71 @@
 import re
-from queue import PriorityQueue
-
-class node:
-    def __init__(self, name = "", value = 0):
-        self.name = name
-        self.value = value
-    def __eq__(self, another):
-        if another == self.name:
-            return True
-        elif hasattr(another, 'name') and self.name == another.name:
-            return True
-        else:
-            return False
-    def __hash__(self):
-        return hash(self.name)
-    def __repr__(self):
-        return self.name
 
 graph = {}
+node_values = {}
 
 with open("in.txt", "r") as f:
     for line in f:
         line = re.sub('\n|,|;', '', line).split()
-        new_node = node(line[1], int(line[4].split("=")[1]))
-        graph[new_node] = set()
+        node_label = line[1]
+        graph[node_label] = set()
+        node_values[node_label] = int(line[4].split("=")[1])
         for neighbour in line[9:]:
-            graph[new_node].add(neighbour)
+            graph[node_label].add(neighbour)
 
-def greed(graph, path, time_left, current_depth):
-    root = path[-1]
-    best_distances = {key: 0 if key==root else float('inf') for key in graph.keys()}
-    priority_queue = PriorityQueue()
-    unvisited_nodes = set(key.name for key in graph.keys())
-    priority_queue.put((0, 'AA'))
+calculated_paths = {}
 
-    while(len(unvisited_nodes) > 0):
-        this_node = priority_queue.get()
-        this_node_key = this_node[1]
-        if this_node_key not in unvisited_nodes:
-            continue
-        this_node_distance = this_node[0]
-        best_distances[this_node_key] = this_node_distance
-        for neighbour in graph[this_node_key]:
-            if neighbour in unvisited_nodes:
-                priority_queue.put((this_node_distance + 1, neighbour))
+def dict_vals_to_str(dict):
+    string = ''
+    for value in dict.values():
+        string += str(value)
+    return string
 
-        unvisited_nodes.remove(this_node_key)
+visisted = {}
 
-    print(best_distances)
+def dfs(node, time, node_values, last):
+    if time <= 1: return 0
 
-greed(graph, ['AA'], 0, 1)
+    node_values_copy = node_values.copy()
+    function_key = (node, time, dict_vals_to_str(node_values))
+
+    if function_key in calculated_paths:
+        return calculated_paths[function_key]
+
+    # Skip valve
+    best_steam = 0
+    for neighbour in graph[node]:
+        best_steam = max(best_steam, dfs(neighbour, time - 1, node_values_copy, node))
+
+    # Open valve
+    steam_val = (time - 1) * node_values_copy[node]
+    if not steam_val == 0:
+        node_values_copy[node] = 0
+        best_steam = max(best_steam, dfs(node, time - 1, node_values_copy, node) + steam_val)
+
+    calculated_paths[function_key] = best_steam
+
+    return best_steam
+
+
+print(dfs('AA', 30, node_values, 'AA'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
