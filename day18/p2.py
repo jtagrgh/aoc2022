@@ -10,14 +10,12 @@ def neighbours(cube):
     cx = cube[0]
     cy = cube[1]
     cz = cube[2]
-    neighbours = []
     for x in range(cx-1,cx+2,2):
-        neighbours.append((x,cy,cz))
+        yield (x,cy,cz)
     for y in range(cy-1,cy+2,2):
-        neighbours.append((cx,y,cz))
+        yield (cx,y,cz)
     for z in range(cz-1,cz+2,2):
-        neighbours.append((cx,cy,z))
-    return neighbours
+        yield (cx,cy,z)
 
 cubes_set = {}
 
